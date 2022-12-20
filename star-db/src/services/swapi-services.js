@@ -33,18 +33,3 @@ export default class SwapiService {
         return this.getResource(`/starships/${id}/`)
     }
 }
-
-const swapi = new SwapiService()
-
-swapi.getAllPeople()
-    .then(body => console.log(body))
-swapi.getPerson(3)
-    .then(body => console.log(body))
-swapi.getAllPlanets()
-    .then(body => console.log(body))
-swapi.getPlanet(1)
-    .then(body => console.log(body))
-swapi.getAllStarships()
-    .then(body => console.log(body))
-swapi.getStarship(11)
-    .then(body => console.log(body))
