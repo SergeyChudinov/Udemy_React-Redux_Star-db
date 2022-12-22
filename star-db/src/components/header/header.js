@@ -1,4 +1,5 @@
 import React from 'react';
+// import {Link, NavLink} from 'react-router-dom'; 
 
 import './header.css';
 
@@ -26,3 +27,11 @@ const Header = () => {
 };
 
 export default Header;
+
+{/* <ul>
+  <li><NavLink style={({ isActive }) => ({color: isActive ? '#9f0013' : 'inherit' })}
+    end  to='/'>Characters</NavLink></li>
+  /
+  <li><NavLink style={({ isActive }) => ({color: isActive ? '#9f0013' : 'inherit' })}
+    to='/comics'>Comics</NavLink></li>
+</ul> */}
