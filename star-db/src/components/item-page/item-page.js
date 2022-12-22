@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 
+import SwapiService from '../../services/swapi-services';
 import ItemList from '../item-list/item-list';
 import PersonDetails from '../person-details/person-details';
 import ErrorIndicator from '../error-indicator/error-indicator';
 
-import './people-page.css';
+import './item-page.css';
 
-export default class PeoplePage extends Component {
-
+export default class ItemPage extends Component {
+  swapiService = new SwapiService();
   state = {
-    selectedPerson: 3,
+    selectedItem: null,
     hasError: false
   };
 
   componentDidCatch(error, info) {
-
     this.setState({
       hasError: true
     });
   }
 
-  onPersonSelected = (selectedPerson) => {
-    this.setState({ selectedPerson });
+  onItemSelected = (selectedItem) => {
+    this.setState({ selectedItem });
   };
 
   render() {
@@ -33,10 +33,11 @@ export default class PeoplePage extends Component {
     return (
       <div className="row mb2">
         <div className="col-md-6">
-          <ItemList onItemSelected={this.onPersonSelected} />
+          <ItemList onItemSelected={this.onItemSelected}
+            getData={this.props.getData} />
         </div>
         <div className="col-md-6">
-          <PersonDetails personId={this.state.selectedPerson} />
+          <PersonDetails personId={this.state.selectedItem} />
         </div>
       </div>
     );

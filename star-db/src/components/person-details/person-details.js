@@ -13,7 +13,8 @@ export default class PersonDetails extends Component {
   state = {
     person: null,
     loading: false,
-    error: false
+    error: false,
+    hasError: false
   };
 
   componentDidMount() {
@@ -26,29 +27,22 @@ export default class PersonDetails extends Component {
     }
   }
 
-  updatePerson = () => {
-    const {personId} = this.props
-    if (!personId) {
-      return
-    }
-    this.onCharLoading();
-    this.swapiService
-      .getPerson(personId)
-      .then(this.onCharLoaded)
-      .catch(this.onError);
-
-  }
-
-  onCharLoaded = (person) => {
+  componentDidCatch(error, info) {
     this.setState({
-      person,
-      loading: false,
+      hasError: true
     });
   }
 
   onCharLoading = () => {
     this.setState({
       loading: true,
+    });
+  }
+
+  onCharLoaded = (person) => {
+    this.setState({
+      person,
+      loading: false,
     });
   }
 
@@ -59,6 +53,17 @@ export default class PersonDetails extends Component {
     });
   }
 
+  updatePerson = () => {
+    const {personId} = this.props
+    if (!personId) {
+      return
+    }
+    this.onCharLoading();
+    this.swapiService
+      .getPerson(personId)
+      .then(this.onCharLoaded)
+      .catch(this.onError);
+  }
 
   render() {
     const {person, loading, error} = this.state;
@@ -66,6 +71,11 @@ export default class PersonDetails extends Component {
     const skeleton = person || loading || error ? null : <Skeleton/>;
     const errorMessage = error ? <ErrorIndicator/> : null;
     const spinner = loading ? <Spinner/> : null;
+    const content = !(loading || error) ? <PersonView person={person}/> : null;
+
+    if (this.state.hasError) {
+      return <ErrorIndicator />;
+    }
 
     if (skeleton) {
       return skeleton
@@ -73,7 +83,7 @@ export default class PersonDetails extends Component {
 
     return (
       <div className="person-details card">
-        {skeleton || errorMessage || spinner || <PersonView person={person}/>}
+        {errorMessage || spinner || content}
       </div>
     )
   }
