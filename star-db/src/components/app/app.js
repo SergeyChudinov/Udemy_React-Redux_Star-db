@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'; 
 
-import MainPage from '../mainPage';
+import {PeoplePage, PlanetsPage, StarshipsPage} from '../page';
 import SwapiService from '../../services/swapi-services';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import ErrorIndicator from '../error-indicator';
-import PeoplePage from '../item-page';
+// import PeoplePage from '../item-page';
 
 import ErrorButton from '../error-button';
 
@@ -45,20 +46,34 @@ export default class App extends Component {
       null;
 
     return (
-      <div className="stardb-app">
-        <Header />
-        { planet }
+      <Router>
+        <div className="stardb-app">
+            <Header/>
+            { planet }
 
-        <div className="row mb2 button-row">
-          <button
-            className="toggle-planet btn btn-warning btn-lg"
-            onClick={this.toggleRandomPlanet}>
-            Toggle Random Planet
-          </button>
-          <ErrorButton />
+            <div className="row mb2 button-row">
+              <button
+                className="toggle-planet btn btn-warning btn-lg"
+                onClick={this.toggleRandomPlanet}>
+                Toggle Random Planet
+              </button>
+              <ErrorButton />
+            </div>
+
+            <main>
+              <Routes>
+                <Route path="/" element={<PeoplePage />}/>              
+                <Route path="/planets" element={<PlanetsPage />}/>
+                <Route path="/starships" element={<StarshipsPage />}/>
+              </Routes>
+            </main>
         </div>
+    </Router>
+    );
+  }
+}
 
-        <MainPage/>
+
 
         {/* <PeoplePage />
 
@@ -82,7 +97,14 @@ export default class App extends Component {
           </div>
         </div> */}
 
-      </div>
-    );
-  }
-}
+
+{/* <main>
+  <Routes>
+    <Route path="/" element={<PeoplePage
+      getData={this.swapiService.getAllPeople}/>}/>              
+    <Route path="/planets" element={<PlanetsPage
+      getData={this.swapiService.getAllPlanets}/>}/>
+    <Route path="/starships" element={<StarshipsPage
+      getData={this.swapiService.getAllStarships}/>}/>
+  </Routes>
+</main> */}

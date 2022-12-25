@@ -8,6 +8,8 @@ import Skeleton from '../skeleton/Skeleton'
 
 import './person-details.css';
 
+import img from './1.png';
+
 export default class PersonDetails extends Component {
   swapiService = new SwapiService()
   state = {
@@ -22,7 +24,7 @@ export default class PersonDetails extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.personId !== prevProps.personId) {
+    if (this.props.itemId !== prevProps.itemId) {
       this.updatePerson()
     }
   }
@@ -54,24 +56,23 @@ export default class PersonDetails extends Component {
   }
 
   updatePerson = () => {
-    const {personId} = this.props
-    if (!personId) {
+    const {itemId, getItem} = this.props
+    if (!itemId) {
       return
     }
     this.onCharLoading();
-    this.swapiService
-      .getPerson(personId)
+    getItem(itemId)
       .then(this.onCharLoaded)
       .catch(this.onError);
   }
 
   render() {
     const {person, loading, error} = this.state;
+    // console.log(person)
 
     const skeleton = person || loading || error ? null : <Skeleton/>;
     const errorMessage = error ? <ErrorIndicator/> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <PersonView person={person}/> : null;
 
     if (this.state.hasError) {
       return <ErrorIndicator />;
@@ -80,6 +81,17 @@ export default class PersonDetails extends Component {
     if (skeleton) {
       return skeleton
     } 
+
+    let item = null;
+    if (person) {
+      const personView = person.gender ? <PersonView person={person}/> : null;
+      const planetView = person.population ? <PlanetView planet={person}/> : null;
+      const starshipView = person.model ? <StarshipView starship={person}/> : null;
+
+      item = personView || planetView || starshipView;
+    }
+
+    const content = !(loading || error) ? item : null;
 
     return (
       <div className="person-details card">
@@ -111,6 +123,82 @@ const PersonView = ({person}) => {
           <li className="list-group-item">
             <span className="term">Eye Color</span>
             <span>{eyeColor}</span>
+          </li>
+        </ul>
+        <ErrorButton />
+      </div>
+    </>
+  )
+}
+
+const PlanetView = ({planet}) => {
+  const {id, name, population, rotationPeriod, diameter} = planet;
+
+  return (
+    <>
+      <img className="person-image"
+        src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}  alt="img"/>
+
+      <div className="card-body">
+        <h4>{name}</h4>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <span className="term">Population</span>
+            <span>{population}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Rotation Period</span>
+            <span>{rotationPeriod}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Diameter</span>
+            <span>{diameter}</span>
+          </li>
+        </ul>
+        <ErrorButton />
+      </div>
+    </>
+  )
+}
+
+const StarshipView = ({starship}) => {
+  const {id, name, model, manufacturer, costInCredits, length, crew, passengers, cargoCapacity} = starship;
+
+  return (
+    <>
+      <img className="person-image"
+        src={`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`}  alt="img"/>
+
+      <div className="card-body">
+        <h4>{name}</h4>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <span className="term">Model</span>
+            <span>{model}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Manufacturer</span>
+            <span>{manufacturer}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">CostInCredits</span>
+            <span>{costInCredits}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Length</span>
+            <span>{length}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Crew</span>
+            <span>{crew}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">Passengers</span>
+            <span>{passengers}</span>
+          </li>
+          <li className="list-group-item">
+            <span className="term">CargoCapacity</span>
+            <span>{cargoCapacity}</span>
           </li>
         </ul>
         <ErrorButton />
