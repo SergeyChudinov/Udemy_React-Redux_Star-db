@@ -11,16 +11,15 @@ import ErrorButton from '../error-button';
 import ItemList from '../item-list/item-list';
 import PersonDetails from '../person-details/person-details';
 
-import './mainPage.css';
-
-export default class MainPage extends Component {
+export default class PeoplePage extends Component {
   swapiService = new SwapiService();
 
   render() {
 
     return (
       <>
-        <ItemPage getData={this.swapiService.getAllPeople}/>
+        <ItemPage getData={this.swapiService.getAllPeople}
+          getItem={this.swapiService.getPerson}/>
 
         {/* <div className="row mb2">
           <div className="col-md-6">

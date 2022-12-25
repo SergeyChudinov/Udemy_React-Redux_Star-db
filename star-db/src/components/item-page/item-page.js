@@ -37,7 +37,8 @@ export default class ItemPage extends Component {
             getData={this.props.getData} />
         </div>
         <div className="col-md-6">
-          <PersonDetails personId={this.state.selectedItem} />
+          <PersonDetails itemId={this.state.selectedItem}
+            getItem={this.props.getItem} />
         </div>
       </div>
     );

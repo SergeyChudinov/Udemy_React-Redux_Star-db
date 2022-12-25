@@ -74,3 +74,9 @@ export default class SwapiService {
         }
     }
 }
+
+
+// const swapiService = new SwapiService()
+// console.log(swapiService.getAllPeople())
+// console.log(swapiService.getAllPlanets())
+// console.log(swapiService.getAllStarships())

@@ -33,7 +33,6 @@ export default class ItemList extends Component {
   updateItemList = () => {
     const { getData } = this.props;
 
-
     getData()
       .then(this.onItemListLoaded)
       .catch(this.onError);
