@@ -5,16 +5,18 @@ import ItemPage from '../item-page';
 
 export default class StarshipsPage extends Component {
   swapiService = new SwapiService();
-  state = {
-    func: null
-  };
 
   render() {
-
+    const {getAllStarships, getStarship, getStarshipImage} = this.swapiService;
     return (
       <>
-        <ItemPage getData={this.swapiService.getAllStarships}
-            getItem={this.swapiService.getStarship}/>
+        <ItemPage getData={getAllStarships}
+          getItem={getStarship}
+          getImageUrl={getStarshipImage} >
+            {(i) => (
+              `${i.name} (${i.model}, ${i.passengers})`
+            )}
+        </ItemPage>
       </>
     );
   }
